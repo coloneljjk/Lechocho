@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#df1828">
+<title>LECHOCHO — Marketplace Automobile du Cameroun</title>
+<style>
+:root {
+  --navy: #0e1219;
+  --red: #df1828;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --bg: #f3f5f9;
+  --line: #e2e8f0;
+  --white: #ffffff;
+  --green: #16a34a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: sans-serif; }
+a { color: inherit; text-decoration: none; }
+.wrap { width: min(1240px, calc(100% - 32px)); margin: auto; }
+.hidden { display: none !important; }
+.pill { display: inline-flex; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.pill.red { background: var(--red); color: white; }
+.pill.yellow { background: #fef08a; color: #854d0e; }
+header { background: #0b0f17; color: white; position: sticky; top: 0; z-index: 50; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+.brand-title { font-size: 26px; font-weight: 900; color: white; }
+.brand-title span { color: var(--red); }
+.hero { background: #0f172a; padding: 48px 0; color: white; }
+.hero h1 { font-size: 32px; margin: 0 0 10px; }
+.hero h1 span { color: var(--red); }
+section { padding: 30px 0; }
+.section-title { font-size: 22px; font-weight: 900; margin: 0 0 4px; }
+.form-card, .order-card { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.btn { border: 0; border-radius: 8px; padding: 12px; font-weight: 800; cursor: pointer; width: 100%; text-align: center; }
+.btn.primary { background: var(--red); color: white; }
+.btn.dark { background: var(--navy); color: white; }
+.btn.danger { background: #fee2e2; color: #991b1b; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.field input, .field select { width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: 8px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal-card { background: white; border-radius: 14px; width: 100%; max-width: 400px; padding: 20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap top-bar">
+    <a href="#" class="brand"><div class="brand-title">LE<span>CHOCHO</span></div></a>
+    <button class="btn primary" style="width:auto; padding:8px 14px; font-size:12px;" onclick="openAdminModal()">⚙️ Admin GS</button>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <h1>LECHOCHO <span>Cameroun</span></h1>
+      <p style="color:#94a3b8; font-size:14px;">Marketplace automobile et services sécurisés par Global Services.</p>
+    </div>
+  </div>
+
+  <section id="commandes-clients">
+    <div class="wrap">
+      <h2 class="section-title">📣 Commandes des clients</h2>
+      <div id="ordersContainer">
+        <article class="order-card" id="lead-1" data-owner-phone="+237675443322">
+          <h4>Toyota RAV4 (2019-2022)</h4>
+          <p style="color:#64748b; font-size:13px;">Acheteur : M. Kamdem<br>Téléphone : <span class="phone-display" style="background:#f1f5f9; padding:2px 6px; font-weight:bold;">••• ••• •• •• 🔒</span></p>
+          <button class="btn dark" onclick="openPaymentModal(1, 'Toyota RAV4', '+237 675 44 33 22')">🔓 Débloquer (500 FCFA)</button>
+          <button class="btn danger owner-delete-btn hidden" style="margin-top:8px;" onclick="deleteOrder(1)">🗑️ Supprimer ma commande</button>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="commander" style="background:white;">
+    <div class="wrap">
+      <h2 class="section-title">📦 Passer une commande</h2>
+      <form id="clientOrderForm" class="form-card" style="background:#f8fafc;">
+        <div class="field"><label>Nom *</label><input id="newClientName" required placeholder="Ex: M. Fotso"></div>
+        <div class="field"><label>Téléphone *</label><input id="newClientPhone" type="tel" required placeholder="+237 6XXXXXXXX"></div>
+        <div class="field"><label>Véhicule recherché *</label><input id="newClientCar" required placeholder="Ex: Hyundai Tucson"></div>
+        <button class="btn primary" type="submit">Publier ma commande</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="compte" style="background:#eef2f7;">
+    <div class="wrap">
+      <h2 class="section-title">👤 Espace Vendeur</h2>
+      <div class="form-card">
+        <form id="loginForm">
+          <div class="field"><label>Téléphone *</label><input id="loginPhone" type="tel" required placeholder="+237 6..."></div>
+          <div class="field"><label>Mot de passe *</label><input id="loginPass" type="password" required></div>
+          <button class="btn primary" type="submit">Se connecter</button>
+        </form>
+
+        <div id="loggedInArea" class="hidden">
+          <p style="font-size:13px; color:#16a34a; font-weight:bold;">Connecté : <span id="loggedPhone"></span></p>
+          <h4 style="margin:10px 0 6px;">Mes annonces :</h4>
+          <div id="myListingsContainer"></div>
+          <button class="btn danger" style="margin-top:14px;" id="btnLogout">Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL MOBILE MONEY -->
+<div class="modal-overlay hidden" id="paymentModal">
+  <div class="modal-card">
+    <h3 style="margin-top:0;">Déblocage Contact (500 FCFA)</h3>
+    <p id="modalVehicleName" style="font-size:13px; color:#64748b;"></p>
+    <div class="field"><label>Votre numéro MoMo/Orange *</label><input type="tel" id="payPhone" value="+237 6"></div>
+    <button class="btn primary" id="btnConfirmPay" onclick="processPayment()">Confirmer le paiement</button>
+    <button class="btn" style="background:#e2e8f0; margin-top:8px;" onclick="closePaymentModal()">Annuler</button>
+  </div>
+</div>
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay hidden" id="adminModal">
+  <div class="modal-card">
+    <h3 style="margin-top:0;">⚙️ Admin Global Services</h3>
+    <p style="font-size:13px; color:#64748b;">Modération des annonces et des leads.</p>
+    <button class="btn primary" onclick="closeAdminModal()">Fermer</button>
+  </div>
+</div>
+
+<script>
+let leadCounter = 1;
+let currentConnectedPhone = '';
+let currentLeadId = null;
+let currentRealPhone = '';
+
+// Soumission d'une commande client
+document.getElementById('clientOrderForm').onsubmit = (e) => {
+  e.preventDefault();
+  leadCounter++;
+  const name = document.getElementById('newClientName').value;
+  const phone = document.getElementById('newClientPhone').value;
+  const car = document.getElementById('newClientCar').value;
+
+  const container = document.getElementById('ordersContainer');
+  const newCard = document.createElement('article');
+  newCard.className = 'order-card';
+  newCard.id = 'lead-' + leadCounter;
+  newCard.setAttribute('data-owner-phone', phone);
+
+  const showDelete = (currentConnectedPhone === phone) ? '' : 'hidden';
+
+  newCard.innerHTML = `
+    <h4>${car}</h4>
+    <p style="color:#64748b; font-size:13px;">Acheteur : ${name}<br>Téléphone : <span class="phone-display" style="background:#f1f5f9; padding:2px 6px; font-weight:bold;">••• ••• •• •• 🔒</span></p>
+    <button class="btn dark" onclick="openPaymentModal(${leadCounter}, '${car}', '${phone}')">🔓 Débloquer (500 FCFA)</button>
+    <button class="btn danger owner-delete-btn ${showDelete}" style="margin-top:8px;" onclick="deleteOrder(${leadCounter})">🗑️ Supprimer ma commande</button>
+  `;
+
+  container.prepend(newCard);
+  alert("Commande publiée avec succès !");
+  e.target.reset();
+};
+
+// Suppression de commande
+function deleteOrder(id) {
+  if(confirm("Voulez-vous supprimer cette commande ?")) {
+    document.getElementById('lead-' + id).remove();
+  }
+}
+
+// Modals
+function openPaymentModal(id, car, phone) {
+  currentLeadId = id;
+  currentRealPhone = phone;
+  document.getElementById('modalVehicleName').textContent = "Véhicule : " + car;
+  document.getElementById('paymentModal').classList.remove('hidden');
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentModal').classList.add('hidden');
+}
+
+function openAdminModal() {
+  document.getElementById('adminModal').classList.remove('hidden');
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.add('hidden');
+}
+
+// Paiement simulé
+function processPayment() {
+  closePaymentModal();
+  const card = document.getElementById('lead-' + currentLeadId);
+  if(card) {
+    const span = card.querySelector('.phone-display');
+    span.style.background = '#dcfce7';
+    span.style.color = '#166534';
+    span.textContent = '📞 ' + currentRealPhone;
+  }
+  alert("Paiement réussi de 500 FCFA ! Numéro débloqué.");
+}
+
+// Connexion vendeur simulée
+document.getElementById('loginForm').onsubmit = (e) => {
+  e.preventDefault();
+  const phone = document.getElementById('loginPhone').value;
+  currentConnectedPhone = phone;
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('loggedInArea').classList.remove('hidden');
+  document.getElementById('loggedPhone').textContent = phone;
+
+  // Affiche les boutons de suppression si le vendeur est le propriétaire de la commande
+  document.querySelectorAll('.order-card').forEach(card => {
+    if(card.getAttribute('data-owner-phone') === phone) {
+      card.querySelector('.owner-delete-btn').classList.remove('hidden');
+    }
+  });
+
+  alert("Connecté avec succès !");
+};
+
+document.getElementById('btnLogout').onclick = () => {
+  currentConnectedPhone = '';
+  document.getElementById('loggedInArea').classList.add('hidden');
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.querySelectorAll('.owner-delete-btn').forEach(btn => btn.classList.add('hidden'));
+  document.getElementById('loginForm').reset();
+};
+</script>
+</body>
+</html>

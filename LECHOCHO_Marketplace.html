@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="LECHOCHO - Marketplace automobile au Cameroun exploitée par Global Services.">
+<meta name="theme-color" content="#df1828">
+<title>LECHOCHO — Marketplace Automobile du Cameroun</title>
+<style>
+:root {
+  --navy: #0e1219;
+  --navy-light: #1a2230;
+  --red: #df1828;
+  --red-hover: #b9111f;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --bg: #f3f5f9;
+  --line: #e2e8f0;
+  --white: #ffffff;
+  --green: #16a34a;
+  --orange: #ff7900;
+  --yellow: #facc15;
+  --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, -apple-system, sans-serif; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+
+.wrap { width: min(1240px, calc(100% - 32px)); margin: auto; }
+.hidden { display: none !important; }
+.pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+.pill.red { background: var(--red); color: white; }
+.pill.green { background: var(--green); color: white; }
+.pill.gray { background: #e2e8f0; color: #475569; }
+.pill.yellow { background: #fef08a; color: #854d0e; }
+
+/* HEADER */
+header { background: #0b0f17; color: white; border-bottom: 2px solid #1f293d; position: sticky; top: 0; z-index: 50; }
+.top-bar { display: flex; align-items: center; justify-content: space-between; height: 76px; gap: 15px; }
+.brand { display: flex; flex-direction: column; }
+.brand-title { font-size: 26px; font-weight: 900; letter-spacing: -1px; color: white; }
+.brand-title span { color: var(--red); }
+.brand-sub { font-size: 10px; letter-spacing: 0.5px; color: #94a3b8; text-transform: uppercase; }
+
+.nav-desktop { display: flex; align-items: center; gap: 4px; }
+.nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #cbd5e1; transition: 0.2s; }
+.nav-item:hover, .nav-item.active { background: var(--red); color: white; }
+.nav-item span.icon { font-size: 16px; line-height: 1; margin-bottom: 2px; }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+.btn-connect { background: var(--red); color: white; padding: 10px 16px; border-radius: 8px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+
+/* HERO BANNER */
+.hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); padding: 48px 0; color: white; }
+.hero h1 { font-size: clamp(30px, 3.8vw, 48px); line-height: 1.1; margin: 0 0 10px; letter-spacing: -1px; }
+.hero h1 span { color: var(--red); }
+.hero p { font-size: 15px; color: #94a3b8; margin: 0 0 25px; }
+
+.searchbox { background: white; padding: 12px; border-radius: 14px; display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.search-field { display: flex; align-items: center; gap: 10px; background: #f8fafc; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.search-field select, .search-field input { border: 0; background: transparent; width: 100%; font-size: 13px; font-weight: 600; color: var(--ink); outline: none; }
+.btn-search { background: var(--red); color: white; border: 0; border-radius: 10px; padding: 0 24px; font-weight: 800; cursor: pointer; }
+
+/* SECTIONS & CARDS */
+section { padding: 40px 0; }
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+.section-title { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; margin: 0 0 4px; }
+.section-sub { font-size: 13px; color: var(--muted); margin: 0; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.cars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+.car-card, .panel, .form-card, .order-card { background: white; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); }
+.car-card { overflow: hidden; display: flex; flex-direction: column; }
+.car-thumb { height: 160px; background: #e2e8f0; position: relative; overflow: hidden; }
+.car-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.car-thumb .pill { position: absolute; top: 10px; left: 10px; }
+.car-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+.car-body h3 { font-size: 15px; font-weight: 800; margin: 0 0 6px; }
+.car-meta { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.car-price { font-size: 17px; font-weight: 900; color: var(--red); margin-top: auto; margin-bottom: 12px; }
+
+/* CATEGORIES */
+.category-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 40px; }
+.cat-card { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: var(--shadow); }
+.cat-card span { font-size: 28px; display: block; margin-bottom: 8px; }
+.cat-card strong { font-size: 13px; font-weight: 800; color: var(--ink); display: block; }
+
+/* CLIENT ORDERS CARD */
+.orders-list-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.order-card { background: white; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 18px; display: grid; grid-template-columns: 100px 1fr auto; gap: 16px; align-items: center; }
+.order-thumb { height: 80px; background: #e2e8f0; border-radius: 8px; overflow: hidden; }
+.order-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.order-info h4 { font-size: 16px; font-weight: 800; margin: 0 0 4px; }
+.order-meta { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.masked-phone { background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight: 700; color: var(--ink); letter-spacing: 1px; }
+.unlocked-phone { background: #dcfce7; padding: 2px 8px; border-radius: 4px; font-weight: 800; color: #166534; letter-spacing: 0.5px; }
+
+/* VENDOR LISTINGS CARD */
+.my-listings-container { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+.listing-item-row { background: #f8fafc; border: 1px solid var(--line); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+
+.btn { border: 0; border-radius: 9px; padding: 12px 18px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+.btn.primary { background: var(--red); color: white; }
+.btn.dark { background: var(--navy); color: white; }
+.btn.outline { background: white; border: 1px solid var(--line); color: var(--ink); }
+.btn.danger { background: #fee2e2; color: #991b1b; }
+.btn.momo { background: #ffcc00; color: #000; }
+.btn.orange { background: #ff7900; color: white; }
+
+/* FORMULAIRES */
+.form-card { background: white; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 24px; }
+.panel { background: white; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 24px; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.field input, .field select, .field textarea { width: 100%; padding: 11px; border: 1px solid var(--line); border-radius: 8px; background: white; }
+
+/* TABS AUTH */
+.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; background: #f1f5f9; padding: 4px; border-radius: 10px; }
+.auth-tab { background: transparent; border: 0; padding: 10px; font-weight: 800; font-size: 13px; cursor: pointer; border-radius: 8px; color: var(--muted); }
+.auth-tab.active { background: white; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+
+/* MODAL MOBILE MONEY */
+.modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+.modal-card { background: white; border-radius: 16px; width: min(480px, 100%); padding: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.modal-header h3 { margin: 0; font-size: 18px; font-weight: 900; }
+.close-btn { background: transparent; border: 0; font-size: 20px; cursor: pointer; font-weight: bold; }
+
+.provider-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.provider-btn { border: 2px solid var(--line); border-radius: 10px; padding: 14px; text-align: center; cursor: pointer; font-weight: 800; font-size: 13px; transition: 0.2s; }
+.provider-btn.active.momo { border-color: #eab308; background: #fefce8; }
+.provider-btn.active.orange { border-color: var(--orange); background: #fff7ed; }
+
+footer { background: #0b0f17; color: #94a3b8; padding: 40px 0; text-align: center; font-size: 13px; border-top: 2px solid #1f293d; }
+
+@media(max-width: 1024px) {
+  .grid-2 { grid-template-columns: 1fr; }
+  .cars-grid { grid-template-columns: repeat(2, 1fr); }
+  .category-grid { grid-template-columns: repeat(3, 1fr); }
+  .searchbox { grid-template-columns: 1fr; }
+  .nav-desktop { display: none; }
+}
+@media(max-width: 600px) {
+  .cars-grid { grid-template-columns: 1fr; }
+  .order-card { grid-template-columns: 1fr; }
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap top-bar">
+    <a href="#" class="brand">
+      <div class="brand-title">LE<span>CHOCHO</span></div>
+      <div class="brand-sub">Global Services · Cameroun</div>
+    </a>
+    
+    <nav class="nav-desktop">
+      <a href="#" class="nav-item active"><span class="icon">🏠</span>Accueil</a>
+      <a href="#acheter" class="nav-item"><span class="icon">🚗</span>Acheter</a>
+      <a href="#commandes-clients" class="nav-item"><span class="icon">📣</span>Commandes Clients</a>
+      <a href="#vendre" class="nav-item"><span class="icon">🏷️</span>Vendre</a>
+      <a href="#commander" class="nav-item"><span class="icon">📦</span>Commander</a>
+      <a href="#compte" class="nav-item"><span class="icon">👤</span>Mon compte</a>
+    </nav>
+
+    <div class="header-right">
+      <button class="btn outline" style="color:white; border-color:#334155; font-size:12px; padding:8px 12px;" onclick="openAdminModal()">⚙️ Admin GS</button>
+      <a href="#compte" class="btn-connect">Espace Vendeur →</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO BANNER -->
+  <div class="hero">
+    <div class="wrap">
+      <h1>Trouvez le véhicule idéal<br><span>au Cameroun !</span></h1>
+      <p>Achetez, vendez et commandez des véhicules en toute sécurité partout au Cameroun.</p>
+      
+      <div class="searchbox">
+        <div class="search-field">
+          <span>🚗</span>
+          <select><option>Tous types</option><option>SUV / 4x4</option><option>Pick-up</option><option>Motos</option></select>
+        </div>
+        <div class="search-field">
+          <span>📍</span>
+          <select>
+            <option value="">Toutes les villes du Cameroun</option>
+            <option>Yaoundé (Centre)</option>
+            <option>Douala (Littoral)</option>
+            <option>Bafoussam (Ouest)</option>
+            <option>Garoua (Nord)</option>
+            <option>Bamenda</option><option>Maroua</option><option>Ngaoundéré</option>
+            <option>Bertoua</option><option>Ebolowa</option><option>Buea</option><option>Kribi</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <span>💰</span>
+          <select><option>Prix max</option><option>Moins de 5 millions FCFA</option><option>5 à 15 millions FCFA</option><option>Plus de 15 millions FCFA</option></select>
+        </div>
+        <button class="btn-search">🔍 Rechercher</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATÉGORIES -->
+  <section>
+    <div class="wrap">
+      <div class="category-grid">
+        <div class="cat-card"><span>🚙</span><strong>SUV / 4x4</strong></div>
+        <div class="cat-card"><span>🚗</span><strong>Berlines</strong></div>
+        <div class="cat-card"><span>🛻</span><strong>Pick-up</strong></div>
+        <div class="cat-card"><span>🚐</span><strong>Vans & Bus</strong></div>
+        <div class="cat-card"><span>🏍️</span><strong>Motos</strong></div>
+        <div class="cat-card"><span>⚙️</span><strong>Pièces & Matériel</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION : ACHETER (VÉHICULES EN VENTE) -->
+  <section id="acheter" style="background: white; border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🚗 Véhicules disponibles</h2>
+          <p class="section-sub">Parcourez les offres de nos concessionnaires partenaires à Yaoundé et Douala.</p>
+        </div>
+      </div>
+
+      <div class="cars-grid">
+        <article class="car-card">
+          <div class="car-thumb">
+            <span class="pill red">Disponible</span>
+            <img src="assets/cars/gle.jpg" alt="GLE" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'160\'><rect width=\'100%\' height=\'100%\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#475569\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>Mercedes-Benz GLE V8</text></svg>'">
+          </div>
+          <div class="car-body">
+            <h3>Mercedes-Benz GLE V8</h3>
+            <div class="car-meta">2021 · Automatique · Essence · Yaoundé</div>
+            <div class="car-price">24 000 000 FCFA</div>
+            <a href="#compte" class="btn primary" style="width:100%; font-size:13px;">Contacter le vendeur</a>
+          </div>
+        </article>
+
+        <article class="car-card">
+          <div class="car-thumb">
+            <span class="pill green">Certifié GS</span>
+            <img src="assets/cars/hilux.jpg" alt="Hilux" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'160\'><rect width=\'100%\' height=\'100%\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#475569\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>Toyota Hilux 4x4</text></svg>'">
+          </div>
+          <div class="car-body">
+            <h3>Toyota Hilux 4x4</h3>
+            <div class="car-meta">2023 · Manuelle · Diesel · Douala</div>
+            <div class="car-price">19 500 000 FCFA</div>
+            <a href="#compte" class="btn primary" style="width:100%; font-size:13px;">Contacter le vendeur</a>
+          </div>
+        </article>
+
+        <article class="car-card">
+          <div class="car-thumb">
+            <span class="pill red">Disponible</span>
+            <img src="assets/cars/prado.jpg" alt="Prado" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'160\'><rect width=\'100%\' height=\'100%\' fill=\'%23e2e8f0\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'#475569\' font-family=\'sans-serif\' font-size=\'14\' font-weight=\'bold\'>Toyota Prado TXL</text></svg>'">
+          </div>
+          <div class="car-body">
+            <h3>Toyota Prado TXL</h3>
+            <div class="car-meta">2020 · Automatique · Diesel · Yaoundé</div>
+            <div class="car-price">28 000 000 FCFA</div>
+            <a href="#compte" class="btn primary" style="width:100%; font-size:13px;">Contacter le vendeur</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPACE : COMMANDES DES CLIENTS -->
+  <section id="commandes-clients">
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">📣 Commandes des clients</h2>
+          <p class="section-sub">Débloquez les coordonnées directes des acheteurs via Mobile Money (500 FCFA).</p>
+        </div>
+      </div>
+
+      <div class="orders-list-grid" id="ordersContainer">
+        <!-- Commande initiale -->
+        <article class="order-card" id="lead-1" data-owner-phone="+237675443322">
+          <div class="order-thumb"><img src="assets/cars/rav4.jpg" alt="RAV4" onerror="this.src='data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'80\'><rect width=\'100%\' height=\'100%\' fill=\'%23cbd5e1\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23475569\' font-family=\'sans-serif\' font-size=\'12\' font-weight=\'bold\'>RAV4</text></svg>'"></div>
+          <div class="order-info">
+            <span class="pill yellow">Nouvelle demande</span>
+            <h4>Toyota RAV4 (2019–2022)</h4>
+            <div class="order-meta">
+              <strong>Acheteur :</strong> M. Kamdem<br>
+              <strong>Budget :</strong> 15 millions FCFA · Yaoundé<br>
+              <strong>Téléphone :</strong> <span class="phone-display masked-phone">••• ••• •• •• 🔒</span>
+            </div>
+          </div>
+          <div style="text-align:right; display:flex; flex-direction:column; gap:8px;">
+            <button class="btn dark unlock-action-btn" onclick="openPaymentModal(1, 'Toyota RAV4', '+237 675 44 33 22')">
+              🔓 Débloquer (500 FCFA)
+            </button>
+            <button class="btn danger owner-delete-btn hidden" style="padding:6px 12px; font-size:12px;" onclick="deleteOrder(1)">
+              🗑️ Supprimer ma commande
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION : PASSER UNE COMMANDE (CLIENT) -->
+  <section id="commander" style="background: white; border-top: 1px solid var(--line);">
+    <div class="wrap" style="max-width: 800px;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">📦 Passer une commande de véhicule</h2>
+          <p class="section-sub">Vous recherchez un modèle précis ? Publiez votre demande sur la plateforme.</p>
+        </div>
+      </div>
+
+      <form id="clientOrderForm" class="form-card" style="background:#f8fafc;">
+        <div class="grid-2">
+          <div class="field"><label>Votre Nom (Acheteur) *</label><input id="newClientName" required placeholder="Ex: M. Fotso"></div>
+          <div class="field"><label>Votre Téléphone *</label><input id="newClientPhone" type="tel" required placeholder="+237 6XXXXXXXX"></div>
+        </div>
+        <div class="grid-2" style="margin-top:10px;">
+          <div class="field"><label>Véhicule recherché *</label><input id="newClientCar" required placeholder="Ex: Hyundai Tucson (2020)"></div>
+          <div class="field"><label>Budget & Ville *</label><input id="newClientMeta" required placeholder="Ex: 12 millions FCFA · Douala"></div>
+        </div>
+        <button class="btn primary" style="width:100%; margin-top:15px;" type="submit">Publier ma commande d'achat</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- SECTION : VENDRE UN VÉHICULE -->
+  <section id="vendre" style="background: var(--bg);">
+    <div class="wrap" style="max-width: 800px;">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">🏷️ Vendre votre véhicule</h2>
+          <p class="section-sub">Soumettez votre annonce pour validation par Global Services.</p>
+        </div>
+      </div>
+
+      <form class="form-card" onsubmit="event.preventDefault(); alert('Annonce soumise avec succès ! Elle est en attente de modération par l\'administrateur.'); this.reset();">
+        <div class="grid-2">
+          <div class="field"><label>Marque & Modèle *</label><input required placeholder="Ex: Range Rover Evoque"></div>
+          <div class="field"><label>Prix (FCFA) *</label><input type="number" required placeholder="Ex: 17500000"></div>
+        </div>
+        <div class="grid-2" style="margin-top:10px;">
+          <div class="field"><label>Ville *</label>
+            <select required>
+              <option value="">Sélectionner une ville</option>
+              <option>Yaoundé (Centre)</option><option>Douala (Littoral)</option><option>Bafoussam (Ouest)</option><option>Garoua (Nord)</option>
+            </select>
+          </div>
+          <div class="field"><label>Contact Vendeur *</label><input type="tel" required placeholder="+237 6XXXXXXXX"></div>
+        </div>
+        <button class="btn primary" style="width:100%; margin-top:15px;" type="submit">Soumettre l'annonce pour modération</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ESPACE MON COMPTE & AUTHENTIFICATION -->
+  <section id="compte" style="background: #eef2f7; border-top: 1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">👤 Espace Vendeur & Concessionnaire</h2>
+          <p class="section-sub">Connectez-vous ou créez votre compte pour gérer vos annonces.</p>
+        </div>
+      </div>
+
+      <div class="grid-2" style="max-width: 900px; margin: auto;">
+        <div class="form-card">
+          <!-- Onglets de bascule Connexion / Inscription -->
+          <div class="auth-tabs" id="authTabsContainer">
+            <button class="auth-tab active" id="tabLoginBtn" onclick="switchAuthTab('login')">Se connecter</button>
+            <button class="auth-tab" id="tabRegisterBtn" onclick="switchAuthTab('register')">Créer un compte</button>
+          </div>
+
+          <!-- Formulaire de Connexion -->
+          <form id="loginForm">
+            <div class="field"><label>Numéro de téléphone *</label><input id="loginPhone" type="tel" required placeholder="+237 6..."></div>
+            <div class="field"><label>Mot de passe *</label><input id="loginPass" type="password" required placeholder="Votre mot de passe"></div>
+            <button class="btn primary" style="width:100%; margin-top:10px;" type="submit">Se connecter</button>
+          </form>
+
+          <!-- Formulaire de Création de Compte -->
+          <form id="registerForm" class="hidden">
+            <div class="field"><label>Nom complet ou Entreprise *</label><input id="regName" required placeholder="Nom / Global Services"></div>
+            <div class="field"><label>Numéro de téléphone *</label><input id="regPhone" type="tel" required placeholder="+237 6..."></div>
+            <div class="field"><label>Créer un mot de passe *</label><input id="regPass" type="password" required placeholder="Choisissez un mot de passe"></div>
+            <button class="btn primary" style="width:100%; margin-top:10px;" type="submit">S'inscrire et créer mon compte</button>
+          </form>
+
+          <!-- Zone Connecté -->
+          <div id="loggedInArea" class="hidden" style="margin-top:10px;">
+            <div style="background:#eaf8f0; border:1px solid #c6ecd5; color:#155d37; padding:14px; border-radius:8px; font-size:13px; margin-bottom:15px;">
+              Connecté : <strong id="loggedName"></strong><br>
+              Téléphone : <span id="loggedPhone"></span>
+            </div>
+
+            <h4 style="margin:0 0 8px; font-size:14px;">🏷️ Mes annonces publiées :</h4>
+            <div class="my-listings-container" id="myListingsContainer">
+              <!-- Liste dynamique des annonces du vendeur -->
+            </div>
+
+            <button class="btn outline" style="margin-top:20px; width:100%;" id="btnLogout">Se déconnecter</button>
+          </div>
+        </div>
+
+        <div class="panel" style="padding:24px;">
+          <h4 style="margin-top:0;">Avantages du Compte Pro</h4>
+          <ul style="font-size:13px; color:var(--muted); line-height:1.7; padding-left:18px;">
+            <li>Accès direct aux commandes des acheteurs.</li>
+            <li>Gestion sécurisée de vos annonces et de vos requêtes.</li>
+            <li>Paiement sécurisé et rapide via MoMo / Orange Money (500 FCFA).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL MOBILE MONEY -->
+<div class="modal-overlay hidden" id="paymentModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Paiement LECHOCHO — Déblocage Contact</h3>
+      <button class="close-btn" onclick="closePaymentModal()">×</button>
+    </div>
+    
+    <p style="font-size:13px; color:var(--muted); margin-top:0;">
+      Vous débloquez le numéro direct du client pour la recherche : <strong id="modalVehicleName" style="color:var(--ink);"></strong>.
+    </p>
+
+    <div style="background:#f8fafc; border:1px solid var(--line); padding:12px; border-radius:10px; font-size:13px; margin-bottom:16px;">
+      Montant à débiter : <strong style="color:var(--red); font-size:16px;">500 FCFA</strong>
+    </div>
+
+    <label style="font-size:13px; font-weight:800;">Mode de paiement :</label>
+    <div class="provider-options">
+      <div class="provider-btn momo active" id="btnMomo" onclick="selectProvider('momo')">💛 MTN MoMo</div>
+      <div class="provider-btn orange" id="btnOrange" onclick="selectProvider('orange')">🧡 Orange Money</div>
+    </div>
+
+    <div class="field" style="margin-bottom:16px;">
+      <label style="font-size:12px; font-weight:800;">Numéro de téléphone pour le débit *</label>
+      <input type="tel" id="payPhone" placeholder="+237 6XXXXXXXX" value="+237 6">
+    </div>
+
+    <button class="btn primary" style="width:100%; padding:14px; font-size:14px;" id="btnConfirmPay" onclick="processPayment()">
+      Confirmer le paiement (500 FCFA)
+    </button>
+  </div>
+</div>
+
+<!-- MODAL SIMULATION ADMIN -->
+<div class="modal-overlay hidden" id="adminModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>⚙️ Back-Office Administrateur (Global Services)</h3>
+      <button class="close-btn" onclick="closeAdminModal()">×</button>
+    </div>
+    <p style="font-size:13px; color:var(--muted); margin-top:0;">
+      Panneau de modération des annonces soumises par les vendeurs partenaires.
+    </p>
+    <div style="background:#f8fafc; border:1px solid var(--line); padding:12px; border-radius:8px; margin-bottom:15px; font-size:13px;">
+      <strong>Annonces en attente de validation :</strong> 1 en attente
+    </div>
+    <div style="background:#fff; border:1px solid var(--line); padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; font-size:13px;">
+      <div><strong>Toyota Land Cruiser V8</strong><br><span style="color:var(--muted);">Proposé par Concessionnaire Yaoundé</span></div>
+      <button class="btn green" style="padding:6px 12px; font-size:12px; background:var(--green); color:white;" onclick="alert('Annonce validée et publiée sur le site !')">✓ Valider</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><strong>LECHOCHO</strong> — Plateforme exploitée par Global Services.<br>Marketplace automobile au Cameroun. Tous droits réservés © 2026</p>
+  </div>
+</footer>
+
+<script>
+// DONNÉES LOCALES ANNONCES VENDEUR
+let sampleListings = [
+  { id: 101, title: 'Mercedes-Benz GLE 43 V8', price: '22 millions FCFA' },
+  { id: 102, title: 'Toyota Hilux 4x4 (2021)', price: '18.5 millions FCFA' }
+];
+
+let leadCounter = 1;
+let currentConnectedPhone = '';
+
+// GESTION DES ONGLETS CONNEXION / INSCRIPTION
+function switchAuthTab(tab) {
+  if(tab === 'login') {
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('registerForm').classList.add('hidden');
+    document.getElementById('tabLoginBtn').classList.add('active');
+    document.getElementById('tabRegisterBtn').classList.remove('active');
+  } else {
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('registerForm').classList.remove('hidden');
+    document.getElementById('tabLoginBtn').classList.remove('active');
+    document.getElementById('tabRegisterBtn').classList.add('active');
+  }
+}
+
+// PUBLICATION D'UNE COMMANDE CLIENT
+document.getElementById('clientOrderForm').onsubmit = (e) => {
+  e.preventDefault();
+  leadCounter++;
+  const name = document.getElementById('newClientName').value;
+  const phone = document.getElementById('newClientPhone').value;
+  const car = document.getElementById('newClientCar').value;
+  const meta = document.getElementById('newClientMeta').value;
+
+  const container = document.getElementById('ordersContainer');
+  const newCard = document.createElement('article');
+  newCard.className = 'order-card';
+  newCard.id = 'lead-' + leadCounter;
+  newCard.setAttribute('data-owner-phone', phone);
+
+  const showDelete = (currentConnectedPhone === phone) ? '' : 'hidden';
+
+  newCard.innerHTML = `
+    <div class="order-thumb"><img src="data:image/svg+xml;charset=UTF-8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'80\'><rect width=\'100%\' height=\'100%\' fill=\'%23cbd5e1\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23475569\' font-family=\'sans-serif\' font-size=\'12\' font-weight=\'bold\'>${car.split(' ')[0]}</text></svg>"></div>
+    <div class="order-info">
+      <span class="pill yellow">Nouvelle demande</span>
+      <h4>${car}</h4>
+      <div class="order-meta">
+        <strong>Acheteur :</strong> ${name}<br>
+        <strong>Détails :</strong> ${meta}<br>
+        <strong>Téléphone :</strong> <span class="phone-display masked-phone">••• ••• •• •• 🔒</span>
+      </div>
+    </div>
+    <div style="text-align:right; display:flex; flex-direction:column; gap:8px;">
+      <button class="btn dark unlock-action-btn" onclick="openPaymentModal(${leadCounter}, '${car}', '${phone}')">
+        🔓 Débloquer (500 FCFA)
+      </button>
+      <button class="btn danger owner-delete-btn ${showDelete}" style="padding:6px 12px; font-size:12px;" onclick="deleteOrder(${leadCounter})">
+        🗑️ Supprimer ma commande
+      </button>
+    </div>
+  `;
+
+  container.prepend(newCard);
+  alert("Votre commande a été publiée avec succès !");
+  e.target.reset();
+  window.location.hash = 'commandes-clients';
+};
+
+// SUPPRESSION D'UNE COMMANDE
+function deleteOrder(orderId) {
+  if(confirm("Voulez-vous vraiment supprimer votre commande ?")) {
+    const card = document.getElementById('lead-' + orderId);
+    if(card) {
+      card.remove();
+      alert("Votre commande a été supprimée avec succès.");
+    }
+  }
+}
+
+// SUPPRESSION D'UNE ANNONCE PAR LE VENDEUR
+function deleteVendorListing(listingId) {
+  if(confirm("Voulez-vous vraiment supprimer cette annonce ?")) {
+    sampleListings = sampleListings.filter(item => item.id !== listingId);
+    renderVendorListings();
+    alert("Annonce supprimée avec succès.");
+  }
+}
+
+function renderVendorListings() {
+  const container = document.getElementById('myListingsContainer');
+  if(sampleListings.length === 0) {
+    container.innerHTML = '<p style="font-size:12px; color:var(--muted); margin:0;">Aucune annonce active pour le moment.</p>';
+    return;
+  }
+  container.innerHTML = sampleListings.map(item => `
+    <div class="listing-item-row" id="listing-${item.id}">
+      <div><strong>${item.title}</strong><br><span style="color:var(--red); font-weight:700;">${item.price}</span></div>
+      <button class="btn danger" style="padding:6px 10px; font-size:12px;" onclick="deleteVendorListing(${item.id})">🗑️ Supprimer</button>
+    </div>
+  `).join('');
+}
+
+// INSCRIPTION
+document.getElementById('registerForm').onsubmit = (e) => {
+  e.preventDefault();
+  const name = document.getElementById('regName').value;
+  const phone = document.getElementById('regPhone').value;
+  const pass = document.getElementById('regPass').value;
+
+  localStorage.setItem('lechocho_user', JSON.stringify({name, phone, pass}));
+  alert("Compte créé avec succès ! Vous pouvez maintenant vous connecter avec votre mot de passe.");
+  switchAuthTab('login');
+  document.getElementById('loginPhone').value = phone;
+  e.target.reset();
+};
+
+// CONNEXION
+document.getElementById('loginForm').onsubmit = (e) => {
+  e.preventDefault();
+  const phone = document.getElementById('loginPhone').value;
+  const pass = document.getElementById('loginPass').value;
+
+  const savedUser = JSON.parse(localStorage.getItem('lechocho_user'));
+
+  if((savedUser && savedUser.phone === phone && savedUser.pass === pass) || (phone === '+237600000000' && pass === '123456')) {
+    const userName = savedUser ? savedUser.name : 'Vendeur Partenaire';
+    activateSession(userName, phone);
+  } else {
+    activateSession('Professionnel Concessionnaire', phone);
+  }
+};
+
+function activateSession(name, phone) {
+  currentConnectedPhone = phone;
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('authTabsContainer').classList.add('hidden');
+  document.getElementById('loggedInArea').classList.remove('hidden');
+  document.getElementById('loggedName').textContent = name;
+  document.getElementById('loggedPhone').textContent = phone;
+  renderVendorListings();
+
+  const orderCards = document.querySelectorAll('.order-card');
+  orderCards.forEach(card => {
+    const ownerPhone = card.getAttribute('data-owner-phone');
+    if(ownerPhone === phone) {
+      const deleteBtn = card.querySelector('.owner-delete-btn');
+      if(deleteBtn) deleteBtn.classList.remove('hidden');
+    }
+  });
+}
+
+document.getElementById('btnLogout').onclick = () => {
+  currentConnectedPhone = '';
+  document.getElementById('loggedInArea').classList.add('hidden');
+  document.getElementById('authTabsContainer').classList.remove('hidden');
+  switchAuthTab('login');
+  document.getElementById('loginForm').reset();
+
+  document.querySelectorAll('.owner-delete-btn').forEach(btn => btn.classList.add('hidden'));
+};
+
+// MODAL ADMIN
+function openAdminModal() { document.getElementById('adminModal').classList.remove('hidden'); }
+function closeAdminModal() { document.getElementById('adminModal').classList.add('hidden'); }
+
+// PAIEMENT MOBILE MONEY
+let currentLeadId = null;
+let currentRealPhone = '';
+let selectedProvider = 'momo';
+
+function openPaymentModal(leadId, vehicleName, realPhone) {
+  currentLeadId = leadId;
+  currentRealPhone = realPhone;
+  document.getElementById('modalVehicleName').textContent = vehicleName;
+  document.getElementById('paymentModal').classList.remove('hidden');
+}
+
+function closePaymentModal() {
+  document.getElementById('paymentModal').classList.add('hidden');
+}
+
+function selectProvider(provider) {
+  selectedProvider = provider;
+  document.getElementById('btnMomo').className = 'provider-btn momo' + (provider === 'momo' ? ' active' : '');
+  document.getElementById('btnOrange').className = 'provider-btn orange' + (provider === 'orange' ? ' active' : '');
+}
+
+function processPayment() {
+  const payPhone = document.getElementById('payPhone').value;
+  if(payPhone.length < 9) {
+    alert("Veuillez entrer un numéro de téléphone valide au Cameroun.");
+    return;
+  }
+
+  const btn = document.getElementById('btnConfirmPay');
+  btn.disabled = true;
+  btn.textContent = "Validation Mobile Money en cours...";
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.textContent = "Confirmer le paiement (500 FCFA)";
+    closePaymentModal();
+
+    const leadCard = document.getElementById('lead-' + currentLeadId);
+    if(leadCard) {
+      const phoneDisplay = leadCard.querySelector('.phone-display');
+      phoneDisplay.className = 'phone-display unlocked-phone';
+      phoneDisplay.textContent = '📞 ' + currentRealPhone;
+
+      const actionBtn = leadCard.querySelector('.unlock-action-btn');
+      actionBtn.className = 'btn momo';
+      actionBtn.disabled = true;
+      actionBtn.innerHTML = '✓ Contact débloqué';
+    }
+
+    alert("Paiement réussi ! Le numéro du client est désormais débloqué.");
+  }, 1200);
+}
+</script>
+</body>
+</html>
